@@ -1,0 +1,40 @@
+%YAML 1.2
+---
+exposure:
+  exposure: 1.0
+  red_gain: 1.0
+  green_gain: 1.0
+  blue_gain: 1.0
+
+letterbox:
+  width: 640
+  height: 640
+
+normalize:
+  mean: 127.5
+  std: 128.0
+
+inference:
+  backend: trt
+  input_on_cuda: true
+  is_engine_path: false
+  enable_fp16: true
+
+postprocessor:
+  model_width: 640
+  model_height: 640
+  image_width: 1920
+  image_height: 1080
+  letterbox_scale: 0.3333333333333333
+  score_threshold: 0.5
+  nms_threshold: 0.4
+  max_detections: 100
+
+visualizer:
+  width: 1920
+  height: 1080
+  # When false, hide face boxes but keep SCRFD running.
+  show_boxes: true
+  # RGBA 0..1; drawn as an overlay image (HSDK5 GeometryLayer has no color).
+  box_color: [0.0, 1.0, 0.0, 1.0]
+  box_line_width: 3

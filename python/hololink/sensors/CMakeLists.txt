@@ -32,6 +32,7 @@ copy_hololink_python_files(
     FILES
         __init__.py
         csi.py
+        imx219.py
         imx477.py
         v4l2_ids.py
 )

@@ -130,6 +130,27 @@ nb::dict resolve_geometry(
 {
     return resolve_geometry_for(std::move(camera), packetizer_enabled);
 }
+
+// Same FusaCoeCaptureOp (64-byte HSB alignment) geometry resolution as resolve_geometry_for()
+// above, but driven from plain (pixel_format, width, height, packetizer_enabled) scalars
+// instead of a nanobind-bound camera object -- for pure-Python sensor drivers with no
+// C++-bound camera type (e.g. hololink.sensors.imx219.Imx219Cam) that can't be passed through
+// either resolve_geometry() overload. Only correct for a FusaCoeCaptureOp-fed pipeline; a
+// RoceReceiverOp/LinuxReceiverOp-fed pipeline must use resolve_generic_geometry_from_dimensions()
+// below instead.
+nb::dict resolve_geometry_from_dimensions(
+    int pixel_format, uint32_t width, uint32_t height, bool packetizer_enabled)
+{
+    hololink::csi::CsiGeometry geometry;
+    auto adapter
+        = hololink::operators::FusaCoeCaptureOp::make_geometry_adapter(geometry, packetizer_enabled);
+    auto fmt = static_cast<hololink::csi::PixelFormat>(pixel_format);
+    const uint32_t start_byte = adapter->receiver_start_byte();
+    const uint32_t transmitted = adapter->transmitted_line_bytes(fmt, width);
+    const uint32_t received = adapter->received_line_bytes(transmitted);
+    adapter->configure(start_byte, received, width, height, fmt);
+    return geometry_to_dict(geometry);
+}
 #endif // HOLOLINK_BUILD_FUSA
 
 // Resolve CSI geometry via CameraSensor's own plain, generic adapter (8-byte line alignment --
@@ -1420,6 +1441,11 @@ NB_MODULE(_hololink, module)
     module.def("resolve_geometry",
         nb::overload_cast<std::shared_ptr<hololink::sensors::NativeImx274Sensor>, bool>(&resolve_geometry),
         "camera"_a, "packetizer_enabled"_a);
+    module.def("resolve_geometry_from_dimensions", &resolve_geometry_from_dimensions,
+        "pixel_format"_a, "width"_a, "height"_a, "packetizer_enabled"_a,
+        "Same FusaCoeCaptureOp (64-byte HSB alignment) geometry resolution as resolve_geometry(), "
+        "for pure-Python sensor drivers with no C++-bound camera type to pass to that function "
+        "(e.g. hololink.sensors.imx219.Imx219Cam).");
 #endif // HOLOLINK_BUILD_FUSA
 
     module.def("resolve_packed_geometry",

@@ -906,6 +906,7 @@ list(APPEND EXAMPLE_INSTALL_FILES
     linux_body_pose_estimation_imx477.py
     linux_body_pose_estimation.py
     linux_coe_imx274_player.py
+    linux_imx219_face_detection.py
     linux_imx274_frame_validation.py
     linux_imx274_latency.py
     linux_imx274_player.py
@@ -935,10 +936,13 @@ list(APPEND EXAMPLE_INSTALL_FILES
 
     body_pose_estimation.yaml
     example_configuration.yaml
+    linux_imx219_face_detection.yaml
     tao_peoplenet.yaml
 )
 if(HOLOLINK_BUILD_FUSA)
   list(APPEND EXAMPLE_INSTALL_FILES
+    fusa_coe_imx219_face_detection.py
+    fusa_coe_imx219_face_detection.yaml
     fusa_coe_imx274_player.py
     fusa_coe_vb1940_player.py
     fusa_coe_vb1940_latency.py

@@ -202,3 +202,6 @@ __all__ = [
 if hasattr(_native, "resolve_geometry"):
     resolve_geometry = _native.resolve_geometry
     __all__.append("resolve_geometry")
+if hasattr(_native, "resolve_geometry_from_dimensions"):
+    resolve_geometry_from_dimensions = _native.resolve_geometry_from_dimensions
+    __all__.append("resolve_geometry_from_dimensions")
