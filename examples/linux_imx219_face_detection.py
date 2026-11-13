@@ -19,7 +19,7 @@
 # Captures IMX219 1920x1080 RAW10 over UDP via LinuxReceiverOp, runs SCRFD face
 # detection, and overlays green rectangles on the live Holoviz video. The boxes layer is an
 # RGBA image overlay (HSDK5 GeometryLayer has no per-layer color). Default model is
-# examples/models/500m.onnx. Exposure / letterbox / normalize / inference / postprocessor /
+# examples/500m.onnx. Exposure / letterbox / normalize / inference / postprocessor /
 # visualizer settings come from examples/linux_imx219_face_detection.yaml.
 #
 #   LinuxReceiverOp -> CsiToBayerOp -> ImageProcessorOp -> BayerDemosaicOp -> ExposureOp
@@ -36,7 +36,7 @@
 #   --camera-mode N       IMX219 mode (default: 0 = 1920x1080 RAW10)
 #   --i2c-bus N           I2C bus override (default: sensor driver default)
 #   --configuration PATH  YAML config (default: examples/linux_imx219_face_detection.yaml)
-#   --model PATH          SCRFD ONNX/engine path (default: examples/models/500m.onnx)
+#   --model PATH          SCRFD ONNX/engine path (default: examples/500m.onnx)
 #   --frame-limit N       Number of frames to capture (default: unlimited)
 #   --headless            Run without opening a window (still renders, presents nowhere)
 #   --fullscreen          Run in fullscreen mode
@@ -79,7 +79,7 @@ _INFERENCE_OUTPUT_PAIRING_WINDOW = timedelta(microseconds=500)
 
 def scrfd_model_path() -> str:
     return os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "models", SCRFD_MODEL_NAME)
+        os.path.join(os.path.dirname(__file__), SCRFD_MODEL_NAME)
     )
 
 
