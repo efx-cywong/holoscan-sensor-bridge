@@ -61,7 +61,7 @@ module fpga (
     output        sfp0_PCS_RST_N_RX,
     output        sfp0_ETH_EEE_ALERT_EN,
     output        sfp0_PCS_RST_N_TX,
-    output        sfp0_PMA_XCVR_PLLCLK_EN,
+    output        sfp0_PMA_XCVR_PLLCLK_EN
     // Unused KR status and training ports.
     // input         sfp0_KR_FRAME_LOCK,
     // input         sfp0_KR_TRAINING_FAILURE,
