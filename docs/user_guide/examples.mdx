@@ -432,6 +432,43 @@ model. For more information about this application, look
 
 Press Ctrl+C to exit.
 
+## Running the IMX219 face detection example
+
+These examples capture live video from an IMX219 camera on the Efinix Ti375N1156
+Holoscan Sensor Bridge board, run SCRFD face detection, and overlay green bounding boxes
+on the Holoscan visualizer.
+
+Hardware and FPGA setup for this board are described in
+`fpga/efinix/Ti375N1156/README.md`. Follow [Host Setup](setup.mdx) before you run the
+demos.
+
+**Prerequisite**: Download the SCRFD `500m.onnx` model from Hugging Face. From the repo
+base directory `holoscan-sensor-bridge`, inside the demo container:
+
+```sh
+wget -O examples/500m.onnx \
+  https://huggingface.co/RuteNL/SCRFD-face-detection-ONNX/resolve/main/500m.onnx
+```
+
+The first run builds a TensorRT engine next to the ONNX file. Keep that engine for later
+runs.
+
+For unaccelerated hosts (Linux socket receiver):
+
+```sh
+$ python3 examples/linux_imx219_face_detection.py
+```
+
+For AGX Thor with the FuSa CoE accelerated receiver:
+
+```sh
+$ python3 examples/fusa_coe_imx219_face_detection.py
+```
+
+This brings up the Holoscan visualizer with the live IMX219 feed and green face boxes.
+Press Ctrl+C to exit. Use `--model` to select a different ONNX or engine path, and
+`--configuration` to point at the matching YAML file under `examples/`.
+
 ## Running the Stereo IMX274, Stereo IMX477, Leopard imaging Li VB1940 Eagle, and TauroTech DA326 Hawk examples
 
 The `stereo_imx274_player.py` example shows two independent pipelines, one for each
