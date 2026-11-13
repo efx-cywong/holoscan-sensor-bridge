@@ -22,7 +22,7 @@ Set up Environment Variables:
   /path/to/efinity/bin/setup.bat
   ```
 
-- x86 Linux
+- x64 Linux
 
   ```bash
   source /path/to/efinity/bin/setup.sh
