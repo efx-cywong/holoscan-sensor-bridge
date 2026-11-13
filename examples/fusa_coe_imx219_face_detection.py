@@ -59,10 +59,10 @@ import time
 from datetime import timedelta
 
 import cupy as cp
-import hololink.sensors.imx219  
+import hololink.sensors.imx219
 import holoscan as hs
 import holoscan_vision
-import holoscan_visualization as hz
+import holoscan_visualization as hz  # noqa: F401 -- registers "holoscan.visualization.HolovizOp"
 import numpy as np
 import yaml
 from cuda.bindings import driver as cuda_driver
@@ -86,9 +86,7 @@ _INFERENCE_OUTPUT_PAIRING_WINDOW = timedelta(microseconds=500)
 
 
 def scrfd_model_path() -> str:
-    return os.path.abspath(
-        os.path.join(os.path.dirname(__file__), SCRFD_MODEL_NAME)
-    )
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), SCRFD_MODEL_NAME))
 
 
 def _cuda_check(result):
@@ -601,7 +599,9 @@ class ScrfdPostprocessOp(hs.Operator):
         candidates = []
         for stride in (8, 16, 32):
             scores = import_tensor(samples[f"score_{stride}"].data, stream)[0, :, 0]
-            distances = import_tensor(samples[f"bbox_{stride}"].data, stream)[0] * stride
+            distances = (
+                import_tensor(samples[f"bbox_{stride}"].data, stream)[0] * stride
+            )
             positive = cp.where(scores >= self.score_threshold)[0]
             if positive.size == 0:
                 continue
@@ -628,12 +628,8 @@ class ScrfdPostprocessOp(hs.Operator):
 
             model_detections = detections.copy()
             detections[:, :4] /= self.letterbox_scale
-            detections[:, [0, 2]] = np.clip(
-                detections[:, [0, 2]], 0, self.image_width
-            )
-            detections[:, [1, 3]] = np.clip(
-                detections[:, [1, 3]], 0, self.image_height
-            )
+            detections[:, [0, 2]] = np.clip(detections[:, [0, 2]], 0, self.image_width)
+            detections[:, [1, 3]] = np.clip(detections[:, [1, 3]], 0, self.image_height)
             valid = (detections[:, 2] > detections[:, 0]) & (
                 detections[:, 3] > detections[:, 1]
             )
@@ -775,9 +771,7 @@ def run(
         hololink_dev.reset()
 
         mode_enum = hl.sensors.imx219.Imx219_Mode(camera_mode)
-        camera = hl.sensors.imx219.Imx219Cam(
-            channel, i2c_bus=i2c_bus, mode=mode_enum
-        )
+        camera = hl.sensors.imx219.Imx219Cam(channel, i2c_bus=i2c_bus, mode=mode_enum)
         camera.configure(mode_enum)
 
         pixel_format = camera.pixel_format()

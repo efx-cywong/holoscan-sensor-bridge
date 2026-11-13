@@ -29,16 +29,16 @@ import os
 import re
 import shutil
 import sys
-from pathlib import Path
 import xml.etree.ElementTree as ET
+from pathlib import Path
+
 # Tell python where to get Interface Designer's API package
 pt_home = os.environ['EFXPT_HOME']
 sys.path.append(pt_home + "/bin")
 
+import api_service.excp.design_excp as APIExcp  # Get access to API exception
 from api_service.design import DesignAPI  # Get access to design database API
 from api_service.device import DeviceAPI  # Get access to device database API
-import api_service.excp.design_excp as APIExcp  # Get access to API exception
-
 
 is_verbose = True  # Set to True to see detail messages from API engine
 design = DesignAPI(is_verbose)
